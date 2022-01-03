@@ -7,8 +7,8 @@ Byteroo is a key-value storage for your Node.js applications.
 # Usage:
 
 ```js
-const  Byteroo = require('byteroo');
-const  storage = new  Byteroo({
+const Byteroo = require('byteroo');
+const storage = new  Byteroo({
     name:  'mystorage'
     path: '/path/to/storage'
 })
@@ -32,6 +32,9 @@ container.get('john@doe.com'); // -> 'value'
 
 // removing a value
 container.remove('john@doe.com');
+
+// saving data to disk
+container.commit();
 ```
 
 #### Storing data in memory
