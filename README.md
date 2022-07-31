@@ -9,8 +9,8 @@ Byteroo is a key-value storage for your Node.js applications.
 ```js
 const Byteroo = require('byteroo');
 const storage = new Byteroo({
-	name: 'mystorage',
-	path: '/path/to/storage',
+  name: 'mystorage',
+  path: '/path/to/storage',
 });
 const container = storage.getContainerSync('users');
 /* or
@@ -18,10 +18,12 @@ const container = await storage.getContainer('sync');
 */
 ```
 
-| Property | Description                                                                                     |
-| -------- | ----------------------------------------------------------------------------------------------- |
-| name     | Name of your storage, used to automatically find a path in case it's not provided               |
-| path     | [optional] Path where all the containers will be stored, created automatically if doesn't exist |
+| Property    | Description                                                                                     |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| name        | Name of your storage, used to automatically find a path in case it's not provided               |
+| path        | [optional] Path where all the containers will be stored, created automatically if doesn't exist |
+| serialize   | [optional] Custom function to serialize the data object to a string                             |
+| deserialize | [optional] Custom function to deserialize string to data object                                 |
 
 ```js
 // adding new value
@@ -44,7 +46,7 @@ You can store your data in memory by using the IN_MEMORY_STORAGE constant export
 ```js
 const constants = require('byteroo/constants');
 {
-	path: constants.IN_MEMORY_STORAGE;
+  path: constants.IN_MEMORY_STORAGE;
 }
 ```
 
