@@ -4,6 +4,8 @@
 
 Byteroo is a key-value storage for your Node.js applications.
 
+**This library is heavily inspired by sindresorhus' [conf](https://github.com/sindresorhus/conf), you might want to use their library instead of this one since it's more feature rich.**
+
 # Usage:
 
 ```js
