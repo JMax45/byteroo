@@ -28,6 +28,9 @@ class Container {
   remove(key: string) {
     delete this.data[key];
   }
+  has(key: string) {
+    return this.data.hasOwnProperty(key);
+  }
 
   /**
    * save changes on disk

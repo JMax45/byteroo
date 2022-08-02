@@ -37,6 +37,9 @@ container.remove('john@doe.com');
 
 // saving data to disk
 container.commit();
+
+// checking if a property exists
+container.has('john@doe.com');
 ```
 
 #### Storing data in memory
