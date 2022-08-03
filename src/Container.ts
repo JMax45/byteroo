@@ -4,7 +4,13 @@ class Container {
   name: string;
   private saveData: saveDataFunc;
   private data: any;
-  constructor(name: string, saveData: saveDataFunc, data: any) {
+  private autocommit: boolean;
+  constructor(
+    name: string,
+    saveData: saveDataFunc,
+    data: any,
+    autocommit: boolean
+  ) {
     this.name = name;
     this.saveData = saveData;
     try {
@@ -12,6 +18,7 @@ class Container {
     } catch (error) {
       this.data = {};
     }
+    this.autocommit = autocommit;
   }
 
   /**
@@ -21,12 +28,14 @@ class Container {
    */
   set(key: string, value: any) {
     this.data[key] = value;
+    if (this.autocommit) this.commit();
   }
   get(key: string) {
     return this.data[key];
   }
   remove(key: string) {
     delete this.data[key];
+    if (this.autocommit) this.commit();
   }
   has(key: string) {
     return this.data.hasOwnProperty(key);

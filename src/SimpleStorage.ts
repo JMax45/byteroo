@@ -11,6 +11,7 @@ interface SimpleStorageConfig {
   path?: string;
   serialize?: (data: any) => string;
   deserialize?: (data: string) => any;
+  autocommit?: boolean;
 }
 
 const defaultOpts: SimpleStorageConfig = {
@@ -18,6 +19,7 @@ const defaultOpts: SimpleStorageConfig = {
   path: pathModule.join(constants.DATA_FOLDER, 'byteroo'),
   serialize: (data: any) => JSON.stringify(data || '{}'),
   deserialize: (data: string) => JSON.parse(data || '{}'),
+  autocommit: false,
 };
 
 class SimpleStorage {
@@ -46,7 +48,8 @@ class SimpleStorage {
     return new Container(
       name,
       this.saveDataWrapper.bind(this, containerPath),
-      data
+      data,
+      this.config.autocommit!
     );
   }
 }

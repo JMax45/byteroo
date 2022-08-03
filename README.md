@@ -26,6 +26,7 @@ const container = await storage.getContainer('sync');
 | path        | [optional] Path where all the containers will be stored, created automatically if doesn't exist |
 | serialize   | [optional] Custom function to serialize the data object to a string                             |
 | deserialize | [optional] Custom function to deserialize string to data object                                 |
+| autocommit  | [optional] Automatically save data to disk on each change. Default: false                       |
 
 ```js
 // adding new value
