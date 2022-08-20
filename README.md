@@ -43,6 +43,9 @@ container.commit();
 
 // checking if a property exists
 container.has('john@doe.com');
+
+// deleting all items
+container.clear();
 ```
 
 #### Storing data in memory

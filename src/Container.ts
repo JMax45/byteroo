@@ -40,6 +40,10 @@ class Container {
   has(key: string) {
     return this.data.hasOwnProperty(key);
   }
+  clear() {
+    this.data = {};
+    if (this.autocommit) this.commit();
+  }
 
   /**
    * save changes on disk
