@@ -46,6 +46,9 @@ container.has('john@doe.com');
 
 // deleting all items
 container.clear();
+
+// get amount of items
+container.size();
 ```
 
 #### Storing data in memory

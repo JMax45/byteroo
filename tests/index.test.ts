@@ -83,4 +83,14 @@ describe('test SimpleStorage', () => {
     expect(container.get('property1')).toBeUndefined();
     expect(container.get('property2')).toBeUndefined();
   });
+  it('test size method of container', async () => {
+    const storage = new SimpleStorage({
+      name: makeid(8),
+      path: constants.IN_MEMORY_STORAGE,
+    });
+    const container = await storage.getContainer(makeid(8));
+    container.set('property1', 'value1');
+    container.set('property2', 'value2');
+    expect(container.size()).toBe(2);
+  });
 });

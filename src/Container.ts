@@ -44,6 +44,9 @@ class Container {
     this.data = {};
     if (this.autocommit) this.commit();
   }
+  size() {
+    return Object.keys(this.data).length;
+  }
 
   /**
    * save changes on disk
