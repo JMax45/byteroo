@@ -47,6 +47,9 @@ class Container {
   size() {
     return Object.keys(this.data).length;
   }
+  list() {
+    return Object.keys(this.data);
+  }
 
   /**
    * save changes on disk
