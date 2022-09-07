@@ -93,4 +93,15 @@ describe('test SimpleStorage', () => {
     container.set('property2', 'value2');
     expect(container.size()).toBe(2);
   });
+  it('test list method of container', async () => {
+    const storage = new SimpleStorage({
+      name: makeid(8),
+      path: constants.IN_MEMORY_STORAGE,
+    });
+    const container = await storage.getContainer(makeid(8));
+    container.set('property1', 'value1');
+    container.set('property2', 'value2');
+    expect(container.list()[0]).toBe('property1');
+    expect(container.list()[1]).toBe('property2');
+  });
 });

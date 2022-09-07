@@ -49,6 +49,9 @@ container.clear();
 
 // get amount of items
 container.size();
+
+// get list of items
+container.list();
 ```
 
 #### Storing data in memory
