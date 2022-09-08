@@ -38,6 +38,9 @@ container.get('john@doe.com'); // -> 'value'
 // removing a value
 container.remove('john@doe.com');
 
+// you can remove multiple values at once
+container.remove('key1', 'key2', 'key3');
+
 // saving data to disk
 container.commit();
 
