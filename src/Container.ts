@@ -33,8 +33,8 @@ class Container {
   get(key: string) {
     return this.data[key];
   }
-  remove(key: string) {
-    delete this.data[key];
+  remove(...keys: string[]) {
+    for (const key of keys) delete this.data[key];
     if (this.autocommit) this.commit();
   }
   has(key: string) {

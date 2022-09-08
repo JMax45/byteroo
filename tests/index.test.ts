@@ -48,7 +48,7 @@ describe('test SimpleStorage', () => {
     expect(existsSync(storage.path)).toBe(true);
     rm(storage.path, { recursive: true, force: true }, () => {});
   });
-  it('test automatic storage path detection', async () => {
+  it('test remove method of container', async () => {
     const storage = new SimpleStorage({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
@@ -103,5 +103,16 @@ describe('test SimpleStorage', () => {
     container.set('property2', 'value2');
     expect(container.list()[0]).toBe('property1');
     expect(container.list()[1]).toBe('property2');
+  });
+  it('test rest parameters in remove method', async () => {
+    const storage = new SimpleStorage({
+      name: makeid(8),
+      path: constants.IN_MEMORY_STORAGE,
+    });
+    const container = await storage.getContainer(makeid(8));
+    container.set('property1', 'value1');
+    container.set('property2', 'value2');
+    container.remove('property1', 'property2');
+    expect(container.list().length).toBe(0);
   });
 });
