@@ -3,8 +3,8 @@ type saveDataFunc = (data: string, containerName: string) => Promise<void>;
 class Container {
   name: string;
   private saveData: saveDataFunc;
-  private data: any;
-  private autocommit: boolean;
+  protected data: any;
+  protected autocommit: boolean;
   constructor(
     name: string,
     saveData: saveDataFunc,
@@ -60,3 +60,4 @@ class Container {
 }
 
 export default Container;
+export { saveDataFunc };
