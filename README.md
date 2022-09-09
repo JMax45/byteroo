@@ -69,3 +69,23 @@ const constants = require('byteroo/constants');
 ```
 
 This will disable the commit() function (you can still call it without any error) and the data won't be stored to disk.
+
+#### Cache Container
+
+Byteroo includes a container that can be used for caching purposes, you can retrieve it like this:
+
+```js
+const container = storage.getContainerSync('users', { type: 'cache', ttl: 30 });
+/* or
+const container = await storage.getContainer('sync', { type: 'cache', ttl: 30 });
+*/
+```
+
+| Property | Description                                                                                   |
+| -------- | --------------------------------------------------------------------------------------------- |
+| type     | Type of the container ('default'/'cache'), in this case we use cache                          |
+| ttl      | Timeout after which the entries are considered expired (not available in 'default' container) |
+
+CacheContainer can be interacted with in the same way that the normal Container does, in fact it's an extended class of the Container itself. This means that any method that's available in the normal container is also available in CacheContainer, the difference is that CacheContainer automatically checks if your entries are expired based on the `ttl` property. The expired entries are removed from the memory automatically, which means that you don't have to worry about cleaning up disk space.
+
+**Thanks to [Zeverotti](https://github.com/Zeverotti) for his work on this component.**
