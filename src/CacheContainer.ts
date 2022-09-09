@@ -27,7 +27,8 @@ class CacheContainer extends Container {
     if (this.autocommit) this.commit();
   }
   get(key: string) {
-    if (this.data[key].exp >= Date.now() / 1000) return this.data[key].value;
+    if (this.data[key] && this.data[key].exp >= Date.now() / 1000)
+      return this.data[key].value;
     else this.remove(key);
   }
   list() {
@@ -35,3 +36,5 @@ class CacheContainer extends Container {
     return Object.keys(this.data);
   }
 }
+
+export default CacheContainer;

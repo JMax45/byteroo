@@ -1,4 +1,5 @@
 import pathModule from 'path';
+import CacheContainer from './CacheContainer';
 import { constants } from './constants';
 import Container from './Container';
 import { readData } from './utils/readData';
@@ -22,6 +23,14 @@ const defaultOpts: SimpleStorageConfig = {
   autocommit: false,
 };
 
+interface ContainerConfig {
+  type: 'default';
+}
+interface CacheContainerConfig {
+  type: 'cache';
+  ttl: number;
+}
+
 class SimpleStorage {
   path: string;
   config: SimpleStorageConfig;
@@ -35,13 +44,35 @@ class SimpleStorage {
     await saveData(path, this.config.serialize!(data));
     return;
   }
-  async getContainer(name: string) {
+  async getContainer(
+    name: string,
+    params?: ContainerConfig | CacheContainerConfig
+  ) {
     const data = await readData(pathModule.join(this.path, name));
-    return this._returnContainer(name, this.config.deserialize!(data));
+    if (params && params.type === 'cache') {
+      return this._returnCacheContainer(
+        name,
+        this.config.deserialize!(data),
+        params.ttl
+      );
+    } else {
+      return this._returnContainer(name, this.config.deserialize!(data));
+    }
   }
-  getContainerSync(name: string) {
+  getContainerSync(
+    name: string,
+    params?: ContainerConfig | CacheContainerConfig
+  ) {
     const data = readDataSync(pathModule.join(this.path, name));
-    return this._returnContainer(name, this.config.deserialize!(data));
+    if (params && params.type === 'cache') {
+      return this._returnCacheContainer(
+        name,
+        this.config.deserialize!(data),
+        params.ttl
+      );
+    } else {
+      return this._returnContainer(name, this.config.deserialize!(data));
+    }
   }
   private _returnContainer(name: string, data: string) {
     const containerPath = pathModule.join(this.path, name);
@@ -50,6 +81,16 @@ class SimpleStorage {
       this.saveDataWrapper.bind(this, containerPath),
       data,
       this.config.autocommit!
+    );
+  }
+  private _returnCacheContainer(name: string, data: string, ttl: number) {
+    const containerPath = pathModule.join(this.path, name);
+    return new CacheContainer(
+      name,
+      this.saveDataWrapper.bind(this, containerPath),
+      data,
+      this.config.autocommit!,
+      ttl
     );
   }
 }
