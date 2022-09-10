@@ -1,5 +1,5 @@
 import Container from './Container';
-import SimpleStorage from './SimpleStorage';
+import Byteroo from './Byteroo';
 
 export { Container };
-export default SimpleStorage;
+export default Byteroo;

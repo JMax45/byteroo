@@ -1,12 +1,12 @@
-import SimpleStorage, { Container } from '../src';
+import Byteroo, { Container } from '../src';
 import { constants } from '../src/constants';
 import makeid from '../src/utils/makeid';
 import { rm, existsSync } from 'fs';
 import path from 'path';
 
-describe('test SimpleStorage', () => {
+describe('test Byteroo', () => {
   it('write string value', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });
@@ -17,7 +17,7 @@ describe('test SimpleStorage', () => {
     expect(container.get(testvalues.key)).toBe(testvalues.value);
   });
   it('test commit function', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: makeid(8),
     });
@@ -29,7 +29,7 @@ describe('test SimpleStorage', () => {
     rm(storage.path, { recursive: true, force: true }, () => {});
   });
   it('test getContainerSync', () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: makeid(8),
     });
@@ -38,7 +38,7 @@ describe('test SimpleStorage', () => {
     expect(container).toBeInstanceOf(Container);
   });
   it('test automatic storage path detection', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
     });
     const containerName = makeid(8);
@@ -49,7 +49,7 @@ describe('test SimpleStorage', () => {
     rm(storage.path, { recursive: true, force: true }, () => {});
   });
   it('test remove method of container', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });
@@ -60,7 +60,7 @@ describe('test SimpleStorage', () => {
     expect(container.get(testvalues.key)).toBeUndefined();
   });
   it('test has method of container', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });
@@ -71,7 +71,7 @@ describe('test SimpleStorage', () => {
     expect(container.has(randomProperty)).toBe(true);
   });
   it('test clear method of container', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });
@@ -84,7 +84,7 @@ describe('test SimpleStorage', () => {
     expect(container.get('property2')).toBeUndefined();
   });
   it('test size method of container', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });
@@ -94,7 +94,7 @@ describe('test SimpleStorage', () => {
     expect(container.size()).toBe(2);
   });
   it('test list method of container', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });
@@ -105,7 +105,7 @@ describe('test SimpleStorage', () => {
     expect(container.list()[1]).toBe('property2');
   });
   it('test rest parameters in remove method', async () => {
-    const storage = new SimpleStorage({
+    const storage = new Byteroo({
       name: makeid(8),
       path: constants.IN_MEMORY_STORAGE,
     });

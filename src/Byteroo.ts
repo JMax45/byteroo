@@ -6,7 +6,7 @@ import { readData } from './utils/readData';
 import { readDataSync } from './utils/readDataSync';
 import { saveData } from './utils/saveData';
 
-interface SimpleStorageConfig {
+interface ByterooConfig {
   /** Will be used if path is not provided */
   name: string;
   path?: string;
@@ -15,7 +15,7 @@ interface SimpleStorageConfig {
   autocommit?: boolean;
 }
 
-const defaultOpts: SimpleStorageConfig = {
+const defaultOpts: ByterooConfig = {
   name: 'byteroo',
   path: pathModule.join(constants.DATA_FOLDER, 'byteroo'),
   serialize: (data: any) => JSON.stringify(data || '{}'),
@@ -31,10 +31,10 @@ interface CacheContainerConfig {
   ttl: number;
 }
 
-class SimpleStorage {
+class Byteroo {
   path: string;
-  config: SimpleStorageConfig;
-  constructor(config: SimpleStorageConfig) {
+  config: ByterooConfig;
+  constructor(config: ByterooConfig) {
     this.path =
       config.path || pathModule.join(constants.DATA_FOLDER, config.name);
     this.config = { ...defaultOpts, ...config };
@@ -95,5 +95,5 @@ class SimpleStorage {
   }
 }
 
-export default SimpleStorage;
-export { SimpleStorageConfig };
+export default Byteroo;
+export { ByterooConfig };
