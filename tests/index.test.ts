@@ -4,6 +4,8 @@ import makeid from '../src/utils/makeid';
 import { rm, existsSync } from 'fs';
 import path from 'path';
 
+const wait = (n: number) => new Promise((resolve) => setTimeout(resolve, n));
+
 describe('test Byteroo', () => {
   it('write string value', async () => {
     const storage = new Byteroo({
@@ -114,5 +116,42 @@ describe('test Byteroo', () => {
     container.set('property2', 'value2');
     container.remove('property1', 'property2');
     expect(container.list().length).toBe(0);
+  });
+  it('test autocommit one-item queue', async () => {
+    const storageName = makeid(8);
+    const containerName = makeid(8);
+    const storage = new Byteroo({
+      name: storageName,
+      autocommit: true,
+    });
+    const container = await storage.getContainer(containerName);
+    container.set('test1', 'test1');
+    container.set('test2', 'test2');
+    container.remove('test1');
+    container.set('test3', 'test3');
+
+    // Delays the following tests for a maximum amount of times,
+    // necessary since the file saving doesn't complete immediately.
+    // This is not a very good solution but should work for now
+    for (let i = 0; i < 5; i++) {
+      if ((container as any).saveFlagRequest) {
+        await wait(500);
+      } else if (!(container as any).saveFlagRequest) break;
+    }
+
+    // Load the saved file in another container and check if properties
+    // got saved correctly
+    const storage2 = new Byteroo({
+      name: storageName,
+      autocommit: true,
+    });
+    const container2 = await storage2.getContainer(containerName);
+
+    expect(container2.has('test1')).toBe(false);
+    expect(container2.has('test2')).toBe(true);
+    expect(container2.has('test3')).toBe(true);
+
+    expect(existsSync(storage.path)).toBe(true);
+    rm(storage.path, { recursive: true, force: true }, () => {});
   });
 });

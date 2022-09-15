@@ -5,6 +5,8 @@ class Container {
   private saveData: saveDataFunc;
   protected data: any;
   protected autocommit: boolean;
+  protected saveFlag: boolean;
+  protected saveFlagRequest: boolean;
   constructor(
     name: string,
     saveData: saveDataFunc,
@@ -19,6 +21,8 @@ class Container {
       this.data = {};
     }
     this.autocommit = autocommit;
+    this.saveFlag = false;
+    this.saveFlagRequest = false;
   }
 
   /**
@@ -54,8 +58,18 @@ class Container {
   /**
    * save changes on disk
    */
-  commit() {
-    return this.saveData(this.data, this.name);
+  async commit() {
+    if (this.saveFlag) {
+      this.saveFlagRequest = true;
+      return;
+    }
+    this.saveFlag = true;
+    await this.saveData(this.data, this.name);
+    this.saveFlag = false;
+    if (this.saveFlagRequest) {
+      this.commit();
+    }
+    this.saveFlagRequest = false;
   }
 }
 
