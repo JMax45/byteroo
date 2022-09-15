@@ -19,7 +19,13 @@ const defaultOpts: ByterooConfig = {
   name: 'byteroo',
   path: pathModule.join(constants.DATA_FOLDER, 'byteroo'),
   serialize: (data: any) => JSON.stringify(data || '{}'),
-  deserialize: (data: string) => JSON.parse(data || '{}'),
+  deserialize: (data: string) => {
+    try {
+      return JSON.parse(data);
+    } catch (err) {
+      return {};
+    }
+  },
   autocommit: false,
 };
 

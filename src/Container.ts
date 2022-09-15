@@ -15,11 +15,7 @@ class Container {
   ) {
     this.name = name;
     this.saveData = saveData;
-    try {
-      this.data = data;
-    } catch (error) {
-      this.data = {};
-    }
+    this.data = data;
     this.autocommit = autocommit;
     this.saveFlag = false;
     this.saveFlagRequest = false;

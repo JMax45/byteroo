@@ -1,10 +1,13 @@
 import Byteroo, { Container } from '../src';
 import { constants } from '../src/constants';
 import makeid from '../src/utils/makeid';
-import { rm, existsSync } from 'fs';
+import { rm, existsSync, writeFile, mkdir } from 'fs';
 import path from 'path';
+import { promisify } from 'util';
 
 const wait = (n: number) => new Promise((resolve) => setTimeout(resolve, n));
+const writeFileAsync = promisify(writeFile);
+const mkdirAsync = promisify(mkdir);
 
 describe('test Byteroo', () => {
   it('write string value', async () => {
@@ -152,6 +155,21 @@ describe('test Byteroo', () => {
     expect(container2.has('test3')).toBe(true);
 
     expect(existsSync(storage.path)).toBe(true);
+    rm(storage.path, { recursive: true, force: true }, () => {});
+  });
+  it('test invalid data object', async () => {
+    const storage = new Byteroo({
+      name: makeid(8),
+      autocommit: true,
+    });
+    const containerName = makeid(8);
+    await mkdirAsync(storage.path);
+    await writeFileAsync(
+      path.join(storage.path, containerName),
+      'INVALID JSON DATA'
+    );
+    const container = await storage.getContainer(containerName);
+    expect(container).not.toBeUndefined();
     rm(storage.path, { recursive: true, force: true }, () => {});
   });
 });
