@@ -88,4 +88,12 @@ const container = await storage.getContainer('sync', { type: 'cache', ttl: 30 })
 
 CacheContainer can be interacted with in the same way that the normal Container does, in fact it's an extended class of the Container itself. This means that any method that's available in the normal container is also available in CacheContainer, the difference is that CacheContainer automatically checks if your entries are expired based on the `ttl` property. The expired entries are removed from the memory automatically, which means that you don't have to worry about cleaning up disk space.
 
+```js
+// adding a new value is the same as in the normal container
+container.set('johh@doe.com', 'value');
+
+// setting a new value with a custom ttl (ignoring the one set during container creation)
+container.set('johh@doe.com', 'value', 5);
+```
+
 **Thanks to [Zeverotti](https://github.com/Zeverotti) for his work on this component.**
