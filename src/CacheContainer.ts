@@ -17,11 +17,12 @@ class CacheContainer extends Container {
    *
    * @param key key name
    * @param value can be a string or object (will be stringified)
+   * @param ttl time to live, can be omitted and will fallback to TTL set during container creation
    */
-  set(key: string, value: any) {
+  set(key: string, value: any, ttl?: number) {
     value = {
       value: value,
-      exp: Math.round(Date.now() / 1000 + this.ttl),
+      exp: Math.round(Date.now() / 1000 + (ttl || this.ttl)),
     };
     this.data[key] = value;
     if (this.autocommit) this.commit();
