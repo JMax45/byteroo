@@ -1,5 +1,6 @@
 # Byteroo
 
+[![npm](https://img.shields.io/npm/v/byteroo?logo=npm)](https://www.npmjs.com/package/byteroo)
 [![codecov](https://codecov.io/gh/JMax45/byteroo/branch/master/graph/badge.svg?token=ISW3Z8TOSJ)](https://codecov.io/gh/JMax45/byteroo)
 
 Byteroo is a key-value storage for your Node.js applications.
