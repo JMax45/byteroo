@@ -1,4 +1,5 @@
 type saveDataFunc = (data: string, containerName: string) => Promise<void>;
+type commitResolve = (value: void | PromiseLike<void>) => void;
 
 class Container {
   name: string;
@@ -7,6 +8,7 @@ class Container {
   protected autocommit: boolean;
   protected saveFlag: boolean;
   protected saveFlagRequest: boolean;
+  private commitQueue: commitResolve[];
   constructor(
     name: string,
     saveData: saveDataFunc,
@@ -19,6 +21,7 @@ class Container {
     this.autocommit = autocommit;
     this.saveFlag = false;
     this.saveFlagRequest = false;
+    this.commitQueue = [];
   }
 
   /**
@@ -54,18 +57,24 @@ class Container {
   /**
    * save changes on disk
    */
-  async commit() {
-    if (this.saveFlag) {
-      this.saveFlagRequest = true;
-      return;
-    }
-    this.saveFlag = true;
-    await this.saveData(this.data, this.name);
-    this.saveFlag = false;
-    if (this.saveFlagRequest) {
-      this.commit();
-    }
-    this.saveFlagRequest = false;
+  commit(): Promise<void> {
+    return new Promise(async (resolve) => {
+      if (this.saveFlag) {
+        this.saveFlagRequest = true;
+        this.commitQueue.push(resolve);
+        return;
+      }
+      this.saveFlag = true;
+      await this.saveData(this.data, this.name);
+      resolve();
+      this.saveFlag = false;
+      if (this.saveFlagRequest) {
+        await this.commit();
+        this.commitQueue.forEach((e) => e());
+        this.commitQueue.length = 0;
+      }
+      this.saveFlagRequest = false;
+    });
   }
 }
 
