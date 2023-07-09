@@ -45,9 +45,9 @@ class Byteroo {
       config.path || pathModule.join(constants.DATA_FOLDER, config.name);
     this.config = { ...defaultOpts, ...config };
   }
-  private async saveDataWrapper(path: string, data: string) {
+  private async saveDataWrapper(containerName: string, data: string) {
     if (this.path === constants.IN_MEMORY_STORAGE) return;
-    await saveData(path, this.config.serialize!(data));
+    await saveData(containerName, this.path, this.config.serialize!(data));
     return;
   }
   async getContainer(
@@ -81,19 +81,17 @@ class Byteroo {
     }
   }
   private _returnContainer(name: string, data: string) {
-    const containerPath = pathModule.join(this.path, name);
     return new Container(
       name,
-      this.saveDataWrapper.bind(this, containerPath),
+      this.saveDataWrapper.bind(this, name),
       data,
       this.config.autocommit!
     );
   }
   private _returnCacheContainer(name: string, data: string, ttl: number) {
-    const containerPath = pathModule.join(this.path, name);
     return new CacheContainer(
       name,
-      this.saveDataWrapper.bind(this, containerPath),
+      this.saveDataWrapper.bind(this, name),
       data,
       this.config.autocommit!,
       ttl
