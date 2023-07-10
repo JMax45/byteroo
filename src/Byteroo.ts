@@ -50,46 +50,46 @@ class Byteroo {
     await saveData(containerName, this.path, this.config.serialize!(data));
     return;
   }
-  async getContainer(
+  async getContainer<T = any>(
     name: string,
     params?: ContainerConfig | CacheContainerConfig
   ) {
     const data = await readData(pathModule.join(this.path, name));
     if (params && params.type === 'cache') {
-      return this._returnCacheContainer(
+      return this._returnCacheContainer<T>(
         name,
         this.config.deserialize!(data),
         params.ttl
       );
     } else {
-      return this._returnContainer(name, this.config.deserialize!(data));
+      return this._returnContainer<T>(name, this.config.deserialize!(data));
     }
   }
-  getContainerSync(
+  getContainerSync<T = any>(
     name: string,
     params?: ContainerConfig | CacheContainerConfig
   ) {
     const data = readDataSync(pathModule.join(this.path, name));
     if (params && params.type === 'cache') {
-      return this._returnCacheContainer(
+      return this._returnCacheContainer<T>(
         name,
         this.config.deserialize!(data),
         params.ttl
       );
     } else {
-      return this._returnContainer(name, this.config.deserialize!(data));
+      return this._returnContainer<T>(name, this.config.deserialize!(data));
     }
   }
-  private _returnContainer(name: string, data: string) {
-    return new Container(
+  private _returnContainer<T>(name: string, data: string) {
+    return new Container<T>(
       name,
       this.saveDataWrapper.bind(this, name),
       data,
       this.config.autocommit!
     );
   }
-  private _returnCacheContainer(name: string, data: string, ttl: number) {
-    return new CacheContainer(
+  private _returnCacheContainer<T>(name: string, data: string, ttl: number) {
+    return new CacheContainer<T>(
       name,
       this.saveDataWrapper.bind(this, name),
       data,

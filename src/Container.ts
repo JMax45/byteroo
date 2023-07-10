@@ -1,7 +1,7 @@
 type saveDataFunc = (data: string, containerName: string) => Promise<void>;
 type commitResolve = (value: void | PromiseLike<void>) => void;
 
-class Container {
+class Container<T> {
   name: string;
   private saveData: saveDataFunc;
   protected data: any;
@@ -29,18 +29,18 @@ class Container {
    * @param key key name
    * @param value can be a string or object (will be stringified)
    */
-  set(key: string, value: any) {
+  set<K extends keyof T>(key: K, value: T[K]) {
     this.data[key] = value;
     if (this.autocommit) this.commit();
   }
-  get(key: string) {
+  get<K extends keyof T>(key: K): T[K] | undefined {
     return this.data[key];
   }
-  remove(...keys: string[]) {
+  remove<K extends keyof T>(...keys: K[]) {
     for (const key of keys) delete this.data[key];
     if (this.autocommit) this.commit();
   }
-  has(key: string) {
+  has<K extends keyof T>(key: K): boolean {
     return this.data.hasOwnProperty(key);
   }
   clear() {
